@@ -17,7 +17,6 @@ def get_restaurants_nearby(location, radius=1500, keyword="restaurant"):
         "keyword": keyword,
         "type": "restaurant"
     }
-    print(params)
     response = requests.get(GOOGLE_MAPS_API_URL, params=params)
     data = response.json()
     results = []
