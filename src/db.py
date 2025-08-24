@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-from models import User
+from src.models import User
 
 DB_NAME = os.getenv("DB_NAME")
 

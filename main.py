@@ -1,6 +1,6 @@
-from db import init_db, add_user, get_user, bulk_add_users
-from google_maps_api import get_restaurants_nearby
-from gemini_api import get_recommendations
+from src.db import init_db, get_user, bulk_add_users
+from src.google_maps_api import get_restaurants_nearby
+from src.gemini_api import get_recommendations
 
 def seed_database():
     users = [
@@ -11,6 +11,7 @@ def seed_database():
         {"name": "Amy", "likes": "Italian pasta, pizza, wine", "dislikes": "Seafood"},
         {"name": "Kaitlyn", "likes": "Burgers, Mexican food, tacos", "dislikes": "Indian curries"},
         {"name": "Jordan", "likes": "Thai food, pad thai, dumplings", "dislikes": "Cheese"},
+        {"name": "Cody", "likes": "Breakfast food, biscuits and gravy", "dislikes": "Fish, mushrooms"},
     ]
 
     bulk_add_users(users)
@@ -30,7 +31,7 @@ def run_demo():
     location = "39.745154503926216, -104.98128501283851"
     restaurants = get_restaurants_nearby(location)
 
-    group_permutations = [["Connor", "Veronica"], ["Connor", "Kennedy", "Jonathan"], ["Connor", "Veronica", "Kaitlyn", "Amy", "Caleb"]]
+    group_permutations = [["Connor", "Cody"]] #, ["Connor", "Kennedy", "Jonathan"], ["Connor", "Veronica", "Kaitlyn", "Amy", "Caleb"]]
 
     for group in group_permutations:
         print(f"Getting recommendations near {location} for group {group}...")

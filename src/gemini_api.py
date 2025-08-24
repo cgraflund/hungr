@@ -3,7 +3,7 @@ import os
 import json
 import re
 
-from models import RecommendationsResponse, User, Restaurant
+from src.models import RecommendationsResponse, User, Restaurant
 
 GEMINI_ENDPOINT = os.getenv("GEMINI_ENDPOINT")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
