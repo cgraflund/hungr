@@ -3,7 +3,7 @@ import os
 import json
 import re
 
-from models import RecommendationsResponse
+from models import RecommendationsResponse, User, Restaurant
 
 GEMINI_ENDPOINT = os.getenv("GEMINI_ENDPOINT")
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
@@ -26,32 +26,36 @@ def parse_gemini_response(response) -> RecommendationsResponse:
         print("Failed to parse response:", e)
         return {"recommendations": []}
 
-def get_recommendations(user_profile, restaurants):
-    likes = user_profile.get("likes", "")
-    dislikes = user_profile.get("dislikes", "")
+def get_recommendations(users: list[User], restaurants: list[Restaurant]):
+    user_profiles_text = "\n".join(
+        [
+            f"- {u.name} (Likes: {u.likes}; Dislikes: {u.dislikes})"
+            for u in users
+        ]
+    )
 
     restaurant_text = "\n".join(
-        [f"- {r['name']} (Rating: {r.get('rating')}, Types: {', '.join(r.get('types', []))}, Address: {r.get('address')})"
+        [f"- {r.name} (Rating: {r.rating}, Types: {', '.join(r.types)}, Address: {r.address})"
          for r in restaurants]
     )
 
     prompt = f"""
-    You are a world-renowned food critic who writes with authority and precision. 
-    Your role is to help a foodie find restaurants that match their preferences. 
-    Base your recommendations on both the user’s profile and the list of nearby restaurants.
+    You are a world-renowned food critic tasked with finding the best restaurant for a group of friends
+    with different tastes. Each person has their own likes and dislikes, and your job is to combine their
+    preferences into a shared taste profile that maximizes group satisfaction.
 
-    The user likes: {likes}.
-    The user dislikes: {dislikes}.
+    Group of friends:
+    {user_profiles_text}
 
-    Here is a list of nearby restaurants with their details:
+    Nearby restaurants:
     {restaurant_text}
 
-    For each recommended restaurant:
-    - "restaurant_name" must exactly match the name provided in the list.
-    - "public_rating" must come directly from the provided Google Maps rating (use null if missing).
-    - "personal_rating" is your own 1–10 score based on how well the restaurant aligns with the user’s likes and dislikes.
-    - "description" is a general unbiased description of the restaurant 
-    - "recommendation_reasoning" is a short descrtiption of why you think the user would like this restaruant.
+    Please:
+    1. Analyze everyone's likes and dislikes to build a shared group taste profile.
+    2. Select the top 3 restaurants that best balance the group's tastes.
+    3. Output ONLY in the following JSON schema, where "public_rating" is taken from the restaurant's info
+       and "personal_rating" is your critic score of how well it matches the group (scale 1–10).
+
 
     Return ONLY a JSON object with the following schema, nothing else:
 

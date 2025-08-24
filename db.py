@@ -1,6 +1,8 @@
 import sqlite3
 import os
 
+from models import User
+
 DB_NAME = os.getenv("DB_NAME")
 
 def init_db():
@@ -24,12 +26,24 @@ def add_user(name, likes="", dislikes=""):
     conn.commit()
     conn.close()
 
-def get_user(name):
+def bulk_add_users(users):
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+
+    cursor.executemany(
+        "INSERT INTO users (name, likes, dislikes) VALUES (?, ?, ?)",
+        [(u["name"], u["likes"], u["dislikes"]) for u in users]
+    )
+
+    conn.commit()
+    conn.close()
+
+def get_user(name) -> User | None:
     conn = sqlite3.connect(DB_NAME)
     cursor = conn.cursor()
     cursor.execute("SELECT likes, dislikes FROM users WHERE name = ?", (name,))
     row = cursor.fetchone()
     conn.close()
     if row:
-        return {"likes": row[0], "dislikes": row[1]}
+        return User(name=name, likes=row[0], dislikes=row[1])
     return None
