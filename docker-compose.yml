@@ -1,10 +1,25 @@
 version: "3.9"
 
 services:
-  restaurant_ai_tool:
+  restaurant_ai_backend:
     build: .
-    container_name: restaurant_ai_tool
+    container_name: restaurant_ai_backend
     env_file: .env
     volumes:
       - .:/app
-    tty: true
+    working_dir: /app/src
+    command: uvicorn main:app --host 0.0.0.0 --port 8000 --reload
+    ports:
+      - "8000:8000"
+
+
+
+  restaurant_ai_frontend:
+    build:
+      context: ./frontend
+    container_name: restaurant_ai_frontend
+    ports:
+      - "8080:80"
+    depends_on:
+      - restaurant_ai_backend
+

@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-from src.models import User
+from models import User
 
 DB_NAME = os.getenv("DB_NAME")
 
@@ -47,3 +47,11 @@ def get_user(name) -> User | None:
     if row:
         return User(name=name, likes=row[0], dislikes=row[1])
     return None
+
+def get_all_users() -> list[User]:
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("SELECT name, likes, dislikes FROM users")
+    rows = cursor.fetchall()
+    conn.close()
+    return [User(name=row[0], likes=row[1], dislikes=row[2]) for row in rows]

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Group Restaurant Picker</title>
+</head>
+<body>
+  <h1>Restaurant Recommendations</h1>
+
+  <label>Select Users:</label><br>
+  <select id="users" multiple></select><br><br>
+
+  <label>Location:</label><br>
+  <input type="text" id="location" placeholder="lat,lng"><br><br>
+
+  <button onclick="getRecommendations()">Get Recommendations</button>
+
+  <h2>Results</h2>
+  <pre id="results"></pre>
+
+  <script>
+    async function loadUsers() {
+      const res = await fetch("http://127.0.0.1:8000/users");
+      const users = await res.json();
+      const select = document.getElementById("users");
+      users.forEach(u => {
+        let opt = document.createElement("option");
+        opt.value = u;
+        opt.innerText = u;
+        select.appendChild(opt);
+      });
+    }
+
+    async function getRecommendations() {
+      const users = Array.from(document.getElementById("users").selectedOptions).map(o => o.value);
+      const location = document.getElementById("location").value;
+
+      const res = await fetch("http://127.0.0.1:8000/recommendations", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({users, location})
+      });
+
+      const data = await res.json();
+      document.getElementById("results").textContent = JSON.stringify(data, null, 2);
+    }
+
+    loadUsers();
+  </script>
+</body>
+</html>

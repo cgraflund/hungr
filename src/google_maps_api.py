@@ -1,6 +1,6 @@
 import requests
 import os
-from src.models import Restaurant
+from models import Restaurant
 
 GOOGLE_MAPS_API_URL = os.getenv("GOOGLE_MAPS_API_URL")
 GOOGLE_MAPS_API_KEY = os.getenv("GOOGLE_MAPS_API_KEY")

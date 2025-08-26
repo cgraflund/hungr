@@ -4,7 +4,8 @@ build:
 
 # Run the app
 run:
-	docker-compose up
+	docker-compose up --build
+
 
 # Stop
 down:

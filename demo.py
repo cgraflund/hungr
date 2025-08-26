@@ -5,7 +5,7 @@ from src.gemini_api import get_recommendations
 def seed_database():
     users = [
         {"name": "Connor", "likes": "Sushi, thai, pasta", "dislikes": "Red Meat"},
-        {"name": "Veronica", "likes": "Sushi, ramen, fresh seafood", "dislikes": "Spicy food"},
+        {"name": "Veronica", "likes": "Sushi, ramen, fresh seafood", "dislikes": "Olives, bell peppers, eggplant"},
         {"name": "Kennedy", "likes": "BBQ, fried chicken, hearty comfort food", "dislikes": "Raw fish"},
         {"name": "Jonathan", "likes": "Vegan bowls, falafel, Mediterranean", "dislikes": "Red meat"},
         {"name": "Amy", "likes": "Italian pasta, pizza, wine", "dislikes": "Seafood"},
@@ -25,13 +25,13 @@ def run_demo():
 
     # Get user preferences
     user_dict = dict()
-    for user_key in ["Connor", "Veronica", "Kennedy", "Jonathan", "Amy", "Kaitlyn", "Jordan"]:
+    for user_key in ["Connor", "Veronica", "Kennedy", "Jonathan", "Amy", "Kaitlyn", "Jordan", "Cody"]:
         user_dict[user_key] = get_user(user_key)
 
     location = "39.745154503926216, -104.98128501283851"
     restaurants = get_restaurants_nearby(location)
 
-    group_permutations = [["Connor", "Cody"]] #, ["Connor", "Kennedy", "Jonathan"], ["Connor", "Veronica", "Kaitlyn", "Amy", "Caleb"]]
+    group_permutations = [["Connor", "Veronica"]] #, ["Connor", "Kennedy", "Jonathan"], ["Connor", "Veronica", "Kaitlyn", "Amy", "Caleb"]]
 
     for group in group_permutations:
         print(f"Getting recommendations near {location} for group {group}...")
