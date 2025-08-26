@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
+import "./App.css"; // We'll create this CSS file
 
 export default function App() {
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [location, setLocation] = useState("");
-  const [recommendations, setRecommendations] = useState(null);
+  const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
 
   // Load all users from backend
@@ -44,55 +45,62 @@ export default function App() {
   };
 
   return (
-    <div className="container">
-      <h1>Restaurant AI Group Picker</h1>
+    <div className="app-container">
+      <header>
+        <h1>🍽️ Restaurant AI Group Picker</h1>
+        <p>Select friends and a location, and get the top restaurant recommendations!</p>
+      </header>
 
-      <div className="form-group">
-        <label>Select Users:</label>
-        <div className="checkbox-list">
-          {users.map((user) => (
-            <label key={user} className="checkbox-item">
-              <input
-                type="checkbox"
-                checked={selectedUsers.includes(user)}
-                onChange={() => toggleUser(user)}
-              />
-              {user}
-            </label>
-          ))}
+      <section className="form-section">
+        <div className="form-group">
+          <label>Select Users:</label>
+          <div className="checkbox-list">
+            {users.map((user) => (
+              <label key={user} className="checkbox-item">
+                <input
+                  type="checkbox"
+                  checked={selectedUsers.includes(user)}
+                  onChange={() => toggleUser(user)}
+                />
+                {user}
+              </label>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <div className="form-group">
-        <label>Location (lat,lng):</label>
-        <input
-          type="text"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          placeholder="39.745154503926216,-104.98128501283851"
-        />
-      </div>
+        <div className="form-group">
+          <label>Location (lat,lng):</label>
+          <input
+            type="text"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            placeholder="39.745154503926216,-104.98128501283851"
+          />
+        </div>
 
-      <button onClick={handleSubmit} disabled={loading}>
-        {loading ? "Loading..." : "Get Recommendations"}
-      </button>
+        <button className="submit-btn" onClick={handleSubmit} disabled={loading}>
+          {loading ? "Loading..." : "Get Recommendations"}
+        </button>
+      </section>
 
-      <div className="results">
-        {recommendations &&
-          recommendations.map((rec, idx) => (
-            <div key={idx} className="recommendation">
+      <section className="results-section">
+        {recommendations.length > 0 && <h2>Top Recommendations</h2>}
+        <div className="results-grid">
+          {recommendations.map((rec, idx) => (
+            <div key={idx} className="recommendation-card">
               <h3>{rec.restaurant_name}</h3>
               <p>
                 <strong>Public rating:</strong> {rec.public_rating} |{" "}
                 <strong>Personal rating:</strong> {rec.personal_rating}
               </p>
               <p>{rec.description}</p>
-              <p>
+              <p className="reasoning">
                 <em>Reasoning: {rec.reccomendation_reasoning}</em>
               </p>
             </div>
           ))}
-      </div>
+        </div>
+      </section>
     </div>
   );
 }
