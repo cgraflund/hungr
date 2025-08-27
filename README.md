@@ -47,6 +47,12 @@ git clone https://github.com/your-username/restaurant-picker.git
 cd restaurant-picker
 ```
 
-### 2. Run everything
+### 2. Copy .env and setup api keys
+
+1. Make a copy of sample.env and rename to .env
+2. Create a google cloud account and setup the google maps and gemini apis to get api keys
+3. Add `GOOGLE_MAPS_API_KEY` and `GEMINI_API_KEY` to the .env file
+
+### 3. Run everything
 
 `make run`
