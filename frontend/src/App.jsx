@@ -5,6 +5,24 @@ export default function App() {
   const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setLocation(`${latitude},${longitude}`);
+        },
+        (error) => {
+          console.error("Error fetching location:", error);
+          setLocation("Denver, CO"); // fallback default
+        }
+      );
+    } else {
+      setLocation("Denver, CO"); // fallback if no geolocation
+    }
+  }, []);
+
   const [recommendations, setRecommendations] = useState([]);
   const [loading, setLoading] = useState(false);
 

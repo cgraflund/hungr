@@ -2,27 +2,8 @@ from src.db import init_db, get_user, bulk_add_users
 from src.google_maps_api import get_restaurants_nearby
 from src.gemini_api import get_recommendations
 
-def seed_database():
-    users = [
-        {"name": "Connor", "likes": "Sushi, thai, pasta", "dislikes": "Red Meat"},
-        {"name": "Veronica", "likes": "Sushi, ramen, fresh seafood", "dislikes": "Olives, bell peppers, eggplant"},
-        {"name": "Kennedy", "likes": "BBQ, fried chicken, hearty comfort food", "dislikes": "Raw fish"},
-        {"name": "Jonathan", "likes": "Vegan bowls, falafel, Mediterranean", "dislikes": "Red meat"},
-        {"name": "Amy", "likes": "Italian pasta, pizza, wine", "dislikes": "Seafood"},
-        {"name": "Kaitlyn", "likes": "Burgers, Mexican food, tacos", "dislikes": "Indian curries"},
-        {"name": "Jordan", "likes": "Thai food, pad thai, dumplings", "dislikes": "Cheese"},
-        {"name": "Cody", "likes": "Breakfast food, biscuits and gravy", "dislikes": "Fish, mushrooms"},
-    ]
-
-    bulk_add_users(users)
 
 def run_demo():
-    # Initialize DB
-    init_db()
-
-    # Seed with test users
-    seed_database()
-
     # Get user preferences
     user_dict = dict()
     for user_key in ["Connor", "Veronica", "Kennedy", "Jonathan", "Amy", "Kaitlyn", "Jordan", "Cody"]:
