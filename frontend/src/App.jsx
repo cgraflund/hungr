@@ -65,8 +65,8 @@ export default function App() {
   return (
     <div className="app-container">
       <header>
-        <h1>🍽️ Restaurant AI Group Picker</h1>
-        <p>Select friends and a location, and get the top restaurant recommendations!</p>
+        <h1>🍽️ Hungr 🍽️</h1>
+        <p>Select who you're eating with and get restaurant recommendations near your current location based on your shared taste profile!</p>
       </header>
 
       <section className="form-section">
